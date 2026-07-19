@@ -5,6 +5,8 @@ class Juego {
         this.pantallaInicial = null;
         this.jugador = null;
         this.nuevoAhora = performance.now();
+
+        this.juegoEnCurso = false;
     }
 
     async precargarAssets(){
@@ -28,6 +30,8 @@ class Juego {
 
         this.pantallaInicial = new Inicio(this.app);
         await this.pantallaInicial.arrancar();
+
+        this.app.renderer.on('resize', () => this.ajustarPantalla());
         
         this.configurarTeclado();
     }
@@ -43,23 +47,34 @@ class Juego {
         await this.cargarFondo();
         await this.cargarJugador();
 
+        this.juegoEnCurso = true;
+
         this.app.ticker.add(() => this.gameLoop());
     }
 
     async cargarFondo(){
         this.fondo = new PIXI.Sprite(this.fondoJuego); 
         this.fondo.zIndex = 0;
+        this.fondo.width = window.innerWidth;
+        this.fondo.height = window.innerHeight;
+
         this.mundo.addChild(this.fondo);
 
         console.log("Fondo cargado")
     }
 
     async cargarJugador(){
-        this.jugador = new Jugador(window.innerWidth/2, window.innerHeight - 400, this.aspectoJugador);
+        this.jugador = new Jugador(window.innerWidth/2, window.innerHeight - 200, this.aspectoJugador);
         this.mundo.addChild(this.jugador.container);
     }
 
     configurarTeclado(){
+        window.addEventListener('wheel', (event) => {
+            if (event.ctrlKey) {
+                event.preventDefault();
+            }
+        }, { passive: false });
+        
         window.addEventListener('keydown', (e) => {
             if (e.key in keys){
                 keys[e.key] = true;
@@ -83,6 +98,18 @@ class Juego {
         window.addEventListener('keyup',   (e) => { window.inputKeys[e.key.toLowerCase()] = false; });
     }
 
+    ajustarPantalla(){
+        if (this.juegoEnCurso) {
+            this.fondo.width = window.innerWidth;
+            this.fondo.height = window.innerHeight;
+        }
+
+        if (!this.juegoEnCurso) {
+            this.pantallaInicial.imagenDeInicio.width = window.innerWidth;
+            this.pantallaInicial.imagenDeInicio.height = window.innerHeight;
+        }
+    }
+
     gameLoop() {
         const ahora = performance.now();
         if(!this.nuevoAhora) this.nuevoAhora = ahora;
@@ -91,6 +118,7 @@ class Juego {
         if (isNaN(dt) || dt > 0.1) dt = 1/60;
         this.nuevoAhora = ahora;
         
+        this.ajustarPantalla();
         this.jugador.inputTeclado(dt, keys);
 
         //this.jugador.mantenerEnPantalla(300, this.fondo.width, this.fondo.height + 50);
@@ -112,7 +140,7 @@ class Inicio{
     constructor(unaApp){
         this.app = unaApp;
         this.contenedor = new PIXI.Container();
-        this.pantallaInicial = null;
+        this.imagenDeInicio = null;
         this.paginasDeBestiario = [];
         this.paginaActualBestiario = null;
     }
@@ -140,11 +168,12 @@ class Inicio{
     async arrancar(){
         await this.precargarAssets();
         
-        this.pantallaInicial = new PIXI.Sprite(this.pantallaInicialSprite);
-        this.contenedor.addChild(this.pantallaInicial);
+        this.imagenDeInicio = new PIXI.Sprite(this.pantallaInicialSprite);
+        this.imagenDeInicio.width = window.innerWidth;
+        this.imagenDeInicio.height = window.innerHeight;
+        this.contenedor.addChild(this.imagenDeInicio);
 
         await this.cargarBestiario();
-        
 
         this.app.stage.addChild(this.contenedor);
     }
