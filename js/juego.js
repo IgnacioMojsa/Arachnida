@@ -7,6 +7,7 @@ class Juego {
         this.nuevoAhora = performance.now();
 
         this.juegoEnCurso = false;
+        this.bestiarioAbierto = false;
     }
 
     async precargarAssets(){
@@ -84,6 +85,15 @@ class Juego {
             if ((e.key === "p" || e.key === "P") && this.pantallaInicial && !this.mundo) {
                 this.empezarPartida();
             }
+
+            if ((e.key === "b" || e.key === "B") && this.pantallaInicial && !this.mundo && !this.bestiarioAbierto) {
+                this.pantallaInicial.abrirBestiario();
+                this.bestiarioAbierto = true;  
+            }
+            else if ((e.key === "b" || e.key === "B") && this.pantallaInicial && !this.mundo && this.bestiarioAbierto) {
+                this.pantallaInicial.cerrarBestiario();  
+                this.bestiarioAbierto = false;  
+            }
         });
 
         window.addEventListener('keyup', (e) => {
@@ -107,6 +117,11 @@ class Juego {
         if (!this.juegoEnCurso) {
             this.pantallaInicial.imagenDeInicio.width = window.innerWidth;
             this.pantallaInicial.imagenDeInicio.height = window.innerHeight;
+        }
+
+        if(this.bestiarioAbierto){
+            this.pantallaInicial.paginaActualBestiario.width = window.innerWidth;
+            this.pantallaInicial.paginaActualBestiario.height = window.innerHeight;
         }
     }
 
@@ -163,6 +178,8 @@ class Inicio{
 
         this.paginasDeBestiario.forEach(pagina => this.contenedor.addChild(pagina));
         this.paginasDeBestiario.forEach(pagina => pagina.visible = false);
+
+        this.paginaActualBestiario = this.paginasDeBestiario[0];
     }
 
     async arrancar(){
@@ -176,6 +193,16 @@ class Inicio{
         await this.cargarBestiario();
 
         this.app.stage.addChild(this.contenedor);
+    }
+
+    abrirBestiario(){
+        this.paginaActualBestiario.visible = true;
+        this.paginaActualBestiario.width = window.innerWidth;
+        this.paginaActualBestiario.height = window.innerHeight;
+    }
+
+    cerrarBestiario(){
+        this.paginaActualBestiario.visible = false;
     }
     
     destruir() {

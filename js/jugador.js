@@ -40,11 +40,26 @@ class Jugador{
         }
     }
 
+    reescalar(){
+        const anchoDiseno = 2100; 
+        const altoDiseno = 1080;
+
+        const factorX = window.innerWidth / anchoDiseno;
+        const factorY = window.innerHeight / altoDiseno;
+
+        this.sprite.scale.x = 0.35 * factorX;
+        this.sprite.scale.y = 0.35 * factorY;
+
+        this.container.y = window.innerHeight - 200 * factorY;
+    }
+
     mantenerEnPantalla(){
 
     }
 
     update(dt){
         this.container.x += this.velocidad.x * dt;
+
+        this.reescalar();
     }
 }
