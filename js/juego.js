@@ -13,6 +13,7 @@ class Juego {
     async precargarAssets(){
         this.fondoJuego = await PIXI.Assets.load("assets/escenario.png");
         this.aspectoJugador = await PIXI.Assets.load("assets/Arachnida.png");
+        this.spriteTelarania = await PIXI.Assets.load("assets/Telarania.png");
     }
 
     async arrancar(){
@@ -97,10 +98,12 @@ class Juego {
         });
 
         window.addEventListener('keyup', (e) => {
-          if (e.key in keys){
-            keys[e.key] = false;
-            e.preventDefault();
-            }
+        // Si la tecla existe en keys, la marcamos como false
+        if (e.key in keys){
+                keys[e.key] = false;
+                keysProcesadas[e.key] = false; // <-- AGREGA ESTO: permite volver a disparar
+                e.preventDefault();
+            } 
         });
 
         window.inputKeys = window.inputKeys || {};
@@ -221,12 +224,23 @@ const keys = {
     D:false,
     P:false,
     R:false,
-    Space:false 
+    " ":false 
 };
 
 const keysProcesadas = {
     p: false,
-    P: false
+    P: false,
+    " ":false 
+}
+
+function unaTeclaFuePresionada(key){
+    if (keys[key] && !keysProcesadas[key]){
+        keysProcesadas[key] = true;
+        return true;
+    }
+    else{
+        return false;
+    }
 }
 
 const nuevoJuego = new Juego();

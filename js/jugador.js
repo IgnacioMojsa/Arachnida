@@ -12,6 +12,9 @@ class Jugador{
         this.aceleracion = 40;
         this.friccion = 0.5;
 
+        this.cooldown = false;
+        this.proyectiles = [];
+
         this.sprite.scale.set(0.35);
 
         this.container.addChild(this.sprite);
@@ -21,6 +24,8 @@ class Jugador{
     inputTeclado(dt, keys){
         this.input.izq    = keys.a || keys.A;
         this.input.der    = keys.d || keys.D;
+
+        //---- MOVIMIENTO DEL JUGADOR ----//
 
         let aceleracionX = 0
 
@@ -38,6 +43,15 @@ class Jugador{
 
             this.velocidad.x *= limite;
         }
+
+        //---- ATAQUE ----//
+
+        const ataque = (keys[" "] && !keysProcesadas[" "]);
+        
+        if (ataque) {
+            this.disparar();
+            console.log("Tirando telarañas");
+        }
     }
 
     reescalar(){
@@ -53,12 +67,31 @@ class Jugador{
         this.container.y = window.innerHeight - 200 * factorY;
     }
 
+    disparar(){
+        if(!this.cooldown){
+            const nuevoProyectil = new Proyectil(this.container.x, this.container.y, nuevoJuego.spriteTelarania);
+
+            this.proyectiles.push(nuevoProyectil);
+
+            this.cooldown = true;
+
+            setTimeout(() => {this.cooldown = false}, 1000)
+        }
+    }
+
+    actualizarPosicionProyectiles(){
+        if(this.proyectiles.length > 0){
+            this.proyectiles.forEach(proyectil => {proyectil.actualizarPosicion()});
+        }
+    }
+
     mantenerEnPantalla(){
 
     }
 
     update(dt){
         this.container.x += this.velocidad.x * dt;
+        this.actualizarPosicionProyectiles();
 
         this.reescalar();
     }
