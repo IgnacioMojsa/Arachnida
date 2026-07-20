@@ -13,13 +13,8 @@ class Proyectil{
     }
 
     actualizarPosicion(){
-        if(this.container.y < -5){
-            this.destruir();
-        }
-        else{
-            this.container.y -= 1;
-            this.container.zIndex = this.container.y;
-        }
+        this.container.y -= 1;
+        this.container.zIndex = this.container.y;
     }
 
     destruir(){

@@ -8,10 +8,12 @@ class Juego {
 
         this.juegoEnCurso = false;
         this.bestiarioAbierto = false;
+        this.spawnDeEnemigos = [];
 
         this.maxProyectiles = 20;
 
         this.nivelActual = null;
+        this.nivelesDelJuego = [];
     }
 
     async precargarAssets(){
@@ -53,7 +55,10 @@ class Juego {
         await this.precargarAssets();
         await this.cargarFondo();
         await this.cargarJugador();
-        await cargarInterfaz();
+        await this.cargarNiveles();
+
+        this.nivelActual.filtrarEnemigos();
+        //this.nivelActual().cargarEnemigos()
 
         this.juegoEnCurso = true;
 
@@ -74,6 +79,18 @@ class Juego {
     async cargarJugador(){
         this.jugador = new Jugador(window.innerWidth/2, window.innerHeight - 200, this.aspectoJugador);
         this.mundo.addChild(this.jugador.container);
+    }
+
+    async cargarNiveles(){
+        const nivel1 = new Nivel(new UINivel(nuevoJuego.spriteNivel1), 10, ["chico"])
+
+        this.nivelesDelJuego.push(nivel1);
+
+        this.nivelActual = nivel1;
+    }
+
+    cambiarNivelActual(nuevoNivel){
+
     }
 
     configurarTeclado(){
@@ -218,6 +235,36 @@ class Inicio{
         this.app.stage.removeChild(this.contenedor);
         this.contenedor.destroy({ children: true });
         console.log("Pantalla de inicio destruida.");
+    }
+}
+
+class Nivel{ 
+    constructor(nuevaUI, cantMax, enemigosPermitidos){
+        this.container = new PIXI.Container();
+        this.uiDeNivel = null;
+
+        this.maxEnemigos = cantMax;
+        this.enemigosEnNivel = [];
+        this.tiposDeEnemigos = enemigosPermitidos;
+        this.enemigosDisponibles = [MoscaDeHumedad, Mariquita, Mosca, Abeja, Mosquito, Abejorro];
+    }
+
+    cargarEnemigos(){  
+        for (let i = 0; i < this.maxEnemigos; i++) {
+            const enemigoAleatorio = this.enemigosDisponibles[obtenerNumeroAleatorio(0, this.enemigosDisponibles.length - 1)];
+
+            const nuevoEnemigo = new enemigoAleatorio();
+        }
+    }
+
+    filtrarEnemigos(){
+        if(this.tiposDeEnemigos.some(e => e === "chico")){
+            this.enemigosDisponibles = [MoscaDeHumedad, Mariquita];
+        }
+
+        else if(this.tiposDeEnemigos.some(e => e === "mediano")){
+            this.enemigosDisponibles = [MoscaDeHumedad, Mariquita, Mosca, Abeja];
+        }
     }
 }
 

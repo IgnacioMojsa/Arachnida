@@ -86,6 +86,12 @@ class Jugador{
         }
     }
 
+    limpiarProyectiles(){
+        const proyectilesFueraDeJuego = this.proyectiles.filter(proyectil => proyectil.container.y < -5);
+
+        proyectilesFueraDeJuego.forEach(proyectil => {proyectil.destruir()});
+    }
+
     mantenerEnPantalla(){
 
     }
@@ -93,6 +99,7 @@ class Jugador{
     update(dt){
         this.container.x += this.velocidad.x * dt;
         this.actualizarPosicionProyectiles();
+        this.limpiarProyectiles();
 
         this.reescalar();
     }
