@@ -165,20 +165,14 @@ class Juego {
         this.nuevoAhora = ahora;
         
         this.ajustarPantalla();
+        
         this.jugador.inputTeclado(dt, keys);
-
         //this.jugador.mantenerEnPantalla(300, this.fondo.width, this.fondo.height + 50);
         this.jugador.update(dt);
 
+        this.nivelActual.moverEnemigos();
         //actualizarInterfaz();
         //actualizarPuntaje();
-
-        /*
-        for (let i = 0; i < this.arrayDeNpc.length; i++){
-            this.arrayDeNpc[i].update(dt);
-            this.resolverColisiones(this.arrayDeNpc[i]);
-        }
-        */
     }
 }
 
@@ -280,6 +274,13 @@ class Nivel{
 
         else if(this.tiposDeEnemigos.some(e => e === "mediano")){
             this.enemigosDisponibles = [MoscaDeHumedad, Mariquita, Mosca, Abeja];
+        }
+    }
+
+    moverEnemigos(){
+        if(this.enemigosEnNivel.length > 0){
+            this.enemigosEnNivel.forEach(enemigo => enemigo.container.y += 0.15)
+            this.enemigosEnNivel.forEach(enemigo => enemigo.container.zIndex = enemigo.container.y)
         }
     }
 
