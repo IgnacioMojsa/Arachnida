@@ -13,11 +13,20 @@ class Proyectil{
     }
 
     actualizarPosicion(){
-        this.container.y -= 1;
-        this.container.zIndex = this.container.y;
+        if(this.container.y < -5){
+            this.destruir();
+        }
+        else{
+            this.container.y -= 1;
+            this.container.zIndex = this.container.y;
+        }
     }
 
     destruir(){
         //Pasado el limite de la pantalla (mas algunos pixeles), se debe eliminar la instancia de proyectil
+        nuevoJuego.mundo.removeChild(this.container);
+        nuevoJuego.jugador.proyectiles.shift()
+        this.container.destroy({ children: true });
+        console.log("Instancia de proyectil destruida.");
     }
 }

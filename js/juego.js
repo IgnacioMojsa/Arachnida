@@ -9,6 +9,8 @@ class Juego {
         this.juegoEnCurso = false;
         this.bestiarioAbierto = false;
 
+        this.maxProyectiles = 20;
+
         this.nivelActual = null;
     }
 
