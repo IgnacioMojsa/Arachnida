@@ -8,12 +8,15 @@ class Juego {
 
         this.juegoEnCurso = false;
         this.bestiarioAbierto = false;
+
+        this.nivelActual = null;
     }
 
     async precargarAssets(){
         this.fondoJuego = await PIXI.Assets.load("assets/escenario.png");
         this.aspectoJugador = await PIXI.Assets.load("assets/Arachnida.png");
         this.spriteTelarania = await PIXI.Assets.load("assets/Telarania.png");
+        this.spriteNivel1 = await PIXI.Assets.load("assets/Nivel1Visual.png");
     }
 
     async arrancar(){
@@ -48,6 +51,7 @@ class Juego {
         await this.precargarAssets();
         await this.cargarFondo();
         await this.cargarJugador();
+        await cargarInterfaz();
 
         this.juegoEnCurso = true;
 

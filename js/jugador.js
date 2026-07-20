@@ -16,6 +16,7 @@ class Jugador{
         this.proyectiles = [];
 
         this.sprite.scale.set(0.35);
+        this.sprite.anchor.set(0.5,0);
 
         this.container.addChild(this.sprite);
         this.container.zIndex = 5;

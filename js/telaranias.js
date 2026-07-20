@@ -2,10 +2,11 @@ class Proyectil{
     constructor(x, y, textura){
         this.sprite = new PIXI.Sprite(textura);
         this.container = new PIXI.Container();
-        this.container.x = x + 30;
+        this.container.x = x;
         this.container.y = y;
 
         this.sprite.scale.set(0.5);
+        this.sprite.anchor.set(0.5,0);
 
         this.container.addChild(this.sprite);
         nuevoJuego.mundo.addChild(this.container);
