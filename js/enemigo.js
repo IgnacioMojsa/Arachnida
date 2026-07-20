@@ -4,6 +4,7 @@ class Enemigo{
         this.sprite = new PIXI.Sprite(textura);
         this.container.x = x;
         this.container.y = y - 15;
+        this.container.zIndex = this.container.y;
 
         this.health = null;
         this.tipoEnemigo = null;
@@ -14,7 +15,7 @@ class Enemigo{
 
 class MoscaDeHumedad extends Enemigo{
     constructor(x, y){
-        super(x, y, PIXI.Assets.load("assets/MoscaDeHumedad.png"));
+        super(x, y, nuevoJuego.spriteMoscaHumedad);
 
         this.health = 25; 
         this.tipoEnemigo = "chico";
@@ -23,7 +24,7 @@ class MoscaDeHumedad extends Enemigo{
 
 class Mariquita extends Enemigo{
     constructor(x, y){
-        super(x, y, PIXI.Assets.load("assets/Mariquita.png"));
+        super(x, y, nuevoJuego.spriteMariquita);
 
         this.health = 50;
         this.tipoEnemigo = "chico";
@@ -32,7 +33,7 @@ class Mariquita extends Enemigo{
 
 class Mosca extends Enemigo{
     constructor(x, y){
-        super(x, y, PIXI.Assets.load("assets/Mosca.png"));
+        super(x, y, nuevoJuego.spriteMosca);
 
         this.health = 75;
         this.tipoEnemigo = "mediano";
@@ -41,7 +42,7 @@ class Mosca extends Enemigo{
 
 class Abeja extends Enemigo{
     constructor(x, y){
-        super(x, y, PIXI.Assets.load("assets/Abeja.png"));
+        super(x, y, nuevoJuego.spriteAbeja);
 
         this.health = 100;
         this.tipoEnemigo = "mediano";
@@ -50,7 +51,7 @@ class Abeja extends Enemigo{
 
 class Mosquito extends Enemigo{
     constructor(x, y){
-        super(x, y, PIXI.Assets.load("assets/Mosquito.png"));
+        super(x, y, nuevoJuego.spriteMosquito);
 
         this.health = 150; 
         this.tipoEnemigo = "grande";
@@ -59,7 +60,7 @@ class Mosquito extends Enemigo{
 
 class Abejorro extends Enemigo{
     constructor(x, y){
-        super(x, y, PIXI.Assets.load("assets/Abejorro.png"));
+        super(x, y, nuevoJuego.spriteAbejorro);
 
         this.health = 175;
         this.tipoEnemigo = "grande";

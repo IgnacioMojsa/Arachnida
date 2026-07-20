@@ -8,7 +8,6 @@ class Juego {
 
         this.juegoEnCurso = false;
         this.bestiarioAbierto = false;
-        this.spawnDeEnemigos = [];
 
         this.maxProyectiles = 20;
 
@@ -21,6 +20,12 @@ class Juego {
         this.aspectoJugador = await PIXI.Assets.load("assets/Arachnida.png");
         this.spriteTelarania = await PIXI.Assets.load("assets/Telarania.png");
         this.spriteNivel1 = await PIXI.Assets.load("assets/Nivel1Visual.png");
+        this.spriteMoscaHumedad = await PIXI.Assets.load("assets/MoscaDeHumedad.png");
+        this.spriteMariquita = await PIXI.Assets.load("assets/Mariquita.png");
+        this.spriteMosca = await PIXI.Assets.load("assets/Mosca.png");
+        this.spriteAbeja = await PIXI.Assets.load("assets/Abeja.png");
+        this.spriteMosquito = await PIXI.Assets.load("assets/Mosquito.png");
+        this.spriteAbejorro = await PIXI.Assets.load("assets/Abejorro.png");
     }
 
     async arrancar(){
@@ -58,7 +63,7 @@ class Juego {
         await this.cargarNiveles();
 
         this.nivelActual.filtrarEnemigos();
-        //this.nivelActual().cargarEnemigos()
+        this.nivelActual.cargarEnemigos();
 
         this.juegoEnCurso = true;
 
@@ -247,13 +252,24 @@ class Nivel{
         this.enemigosEnNivel = [];
         this.tiposDeEnemigos = enemigosPermitidos;
         this.enemigosDisponibles = [MoscaDeHumedad, Mariquita, Mosca, Abeja, Mosquito, Abejorro];
+        this.spawnDeEnemigos = [];
     }
 
     cargarEnemigos(){  
+        let coordenadaY = 0;
+        
         for (let i = 0; i < this.maxEnemigos; i++) {
+            const coordenadaX = this.posicionAleatoria();
             const enemigoAleatorio = this.enemigosDisponibles[obtenerNumeroAleatorio(0, this.enemigosDisponibles.length - 1)];
 
-            const nuevoEnemigo = new enemigoAleatorio();
+            const nuevoEnemigo = new enemigoAleatorio(coordenadaX, coordenadaY);
+
+            this.enemigosEnNivel.push(nuevoEnemigo);
+            this.spawnDeEnemigos.push(coordenadaX);
+
+            coordenadaY -= 35;
+
+            nuevoJuego.mundo.addChild(nuevoEnemigo.container);
         }
     }
 
@@ -265,6 +281,16 @@ class Nivel{
         else if(this.tiposDeEnemigos.some(e => e === "mediano")){
             this.enemigosDisponibles = [MoscaDeHumedad, Mariquita, Mosca, Abeja];
         }
+    }
+
+    posicionAleatoria(){
+        const posicion = obtenerNumeroAleatorio(0, window.innerWidth);
+        
+        if(this.spawnDeEnemigos.length === 0 || !this.spawnDeEnemigos.some(p => p === posicion)){
+            return posicion;
+        }
+        
+        return obtenerNumeroAleatorio(0, window.innerWidth);
     }
 }
 
