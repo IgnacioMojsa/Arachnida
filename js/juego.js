@@ -98,6 +98,25 @@ class Juego {
 
     }
 
+    chequearColisionDeProyectil(){
+        for (let p = this.jugador.proyectiles.length - 1; p >= 0; p--){
+            const proyectil = this.jugador.proyectiles[p];
+
+            for (let e = this.nivelActual.enemigosEnNivel.length - 1; e >= 0; e--){
+                const enemigo = this.nivelActual.enemigosEnNivel[e];
+
+                if (verificarColision(proyectil.collider, enemigo.collider)){
+                    enemigo.health -= 25;
+
+                    proyectil.destruir(p);
+                    enemigo.eliminarEnemigo(e);
+                    
+                    break;
+                }
+            }
+        }
+    }
+
     configurarTeclado(){
         window.addEventListener('wheel', (event) => {
             if (event.ctrlKey) {
@@ -171,6 +190,7 @@ class Juego {
         this.jugador.update(dt);
 
         this.nivelActual.moverEnemigos();
+        this.chequearColisionDeProyectil();
         //actualizarInterfaz();
         //actualizarPuntaje();
     }
@@ -261,7 +281,7 @@ class Nivel{
             this.enemigosEnNivel.push(nuevoEnemigo);
             this.spawnDeEnemigos.push(coordenadaX);
 
-            coordenadaY -= 35;
+            coordenadaY -= 75;
 
             nuevoJuego.mundo.addChild(nuevoEnemigo.container);
         }
@@ -285,13 +305,13 @@ class Nivel{
     }
 
     posicionAleatoria(){
-        const posicion = obtenerNumeroAleatorio(0, window.innerWidth);
+        const posicion = obtenerNumeroAleatorio(0, window.innerWidth - 50);
         
         if(this.spawnDeEnemigos.length === 0 || !this.spawnDeEnemigos.some(p => p === posicion)){
             return posicion;
         }
         
-        return obtenerNumeroAleatorio(0, window.innerWidth);
+        return obtenerNumeroAleatorio(0, window.innerWidth - 50);
     }
 }
 

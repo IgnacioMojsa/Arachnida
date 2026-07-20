@@ -11,6 +11,19 @@ class Enemigo{
 
         this.container.addChild(this.sprite);
     }
+
+    get collider() {
+        return this.sprite.getBounds();
+    }
+
+    eliminarEnemigo(indice){
+        if(this.health <= 0){
+            nuevoJuego.mundo.removeChild(this.container);
+            nuevoJuego.nivelActual.enemigosEnNivel.splice(indice, 1);
+            this.container.destroy({ children: true });
+            console.log("Enemigo eliminado.");
+        }
+    } 
 }
 
 class MoscaDeHumedad extends Enemigo{

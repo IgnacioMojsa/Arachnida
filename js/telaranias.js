@@ -12,15 +12,19 @@ class Proyectil{
         nuevoJuego.mundo.addChild(this.container);
     }
 
+    get collider() {
+        return this.sprite.getBounds();
+    }
+
     actualizarPosicion(){
         this.container.y -= 1;
         this.container.zIndex = this.container.y;
     }
 
-    destruir(){
+    destruir(indice){
         //Pasado el limite de la pantalla (mas algunos pixeles), se debe eliminar la instancia de proyectil
         nuevoJuego.mundo.removeChild(this.container);
-        nuevoJuego.jugador.proyectiles.shift()
+        nuevoJuego.jugador.proyectiles.splice(indice, 1);
         this.container.destroy({ children: true });
         console.log("Instancia de proyectil destruida.");
     }
