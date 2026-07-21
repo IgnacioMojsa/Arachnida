@@ -18,10 +18,19 @@ class Jugador{
         this.sprite.scale.set(0.05);
         this.sprite.anchor.set(0.5,0);
 
+        this.sombra = new PIXI.Sprite(nuevoJuego.spriteSombraArachnida);
+        this.sombra.alpha = 0.6;
+        this.sombra.anchor.set(0.5, 0);
+        this.sombra.scale.set(0.12, 0.15);
+        this.sombra.position.set(this.container.position.x, this.container.position.y + 130)
+        this.sombra.zIndex = 4;
+
         this.container.scale.set(0.5);
 
         this.container.addChild(this.sprite);
         this.container.zIndex = 5;
+
+        nuevoJuego.mundo.addChild(this.sombra);
     }
 
     inputTeclado(dt, keys){
@@ -88,6 +97,10 @@ class Jugador{
         }
     }
 
+    actualizarPosicionSombra(){
+        this.sombra.x = this.container.x;
+    }
+
     limpiarProyectiles(){
         const proyectilesFueraDeJuego = this.proyectiles.filter(proyectil => proyectil.container.y < -5);
 
@@ -95,13 +108,20 @@ class Jugador{
     }
 
     mantenerEnPantalla(){
-
+        if(this.container.x > window.innerWidth - 50){
+            this.container.x = window.innerWidth - 50;
+        }
+        else if(this.container.x < 50){
+            this.container.x = 50;
+        }
     }
 
     update(dt){
         this.container.x += this.velocidad.x * dt;
         this.actualizarPosicionProyectiles();
         this.limpiarProyectiles();
+        this.actualizarPosicionSombra();
+        this.mantenerEnPantalla();
 
         this.reescalar();
     }

@@ -26,6 +26,7 @@ class Juego {
         this.spriteAbeja = await PIXI.Assets.load("assets/Abeja.png");
         this.spriteMosquito = await PIXI.Assets.load("assets/Mosquito.png");
         this.spriteAbejorro = await PIXI.Assets.load("assets/Abejorro.png");
+        this.spriteSombraArachnida = await PIXI.Assets.load("assets/sombraArachnida.png");
     }
 
     async arrancar(){
@@ -186,7 +187,6 @@ class Juego {
         this.ajustarPantalla();
         
         this.jugador.inputTeclado(dt, keys);
-        //this.jugador.mantenerEnPantalla(300, this.fondo.width, this.fondo.height + 50);
         this.jugador.update(dt);
 
         this.nivelActual.moverEnemigos();
@@ -299,19 +299,18 @@ class Nivel{
 
     moverEnemigos(){
         if(this.enemigosEnNivel.length > 0){
-            this.enemigosEnNivel.forEach(enemigo => enemigo.container.y += 0.15)
-            this.enemigosEnNivel.forEach(enemigo => enemigo.container.zIndex = enemigo.container.y)
+            this.enemigosEnNivel.forEach(enemigo => enemigo.moverse())
         }
     }
 
     posicionAleatoria(){
-        const posicion = obtenerNumeroAleatorio(0, window.innerWidth - 50);
+        const posicion = obtenerNumeroAleatorio(0, window.innerWidth - 70);
         
         if(this.spawnDeEnemigos.length === 0 || !this.spawnDeEnemigos.some(p => p === posicion)){
             return posicion;
         }
         
-        return obtenerNumeroAleatorio(0, window.innerWidth - 50);
+        return obtenerNumeroAleatorio(0, window.innerWidth - 70);
     }
 }
 

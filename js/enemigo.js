@@ -16,6 +16,11 @@ class Enemigo{
         return this.sprite.getBounds();
     }
 
+    moverse(){
+        this.container.y += 0.15;
+        this.container.zIndex = this.container.y;
+    }
+
     eliminarEnemigo(indice){
         if(this.health <= 0){
             nuevoJuego.mundo.removeChild(this.container);
