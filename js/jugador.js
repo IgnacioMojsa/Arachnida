@@ -15,7 +15,7 @@ class Jugador{
         this.cooldown = false;
         this.proyectiles = [];
 
-        this.enemigosEliminados = [];
+        this.enemigosEliminados = 0;
 
         this.sprite.scale.set(0.05);
         this.sprite.anchor.set(0.5,0);

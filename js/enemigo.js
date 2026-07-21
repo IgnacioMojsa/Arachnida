@@ -26,6 +26,7 @@ class Enemigo{
             nuevoJuego.mundo.removeChild(this.container);
             nuevoJuego.nivelActual.enemigosEnNivel.splice(indice, 1);
             this.container.destroy({ children: true });
+            nuevoJuego.jugador.enemigosEliminados += 1;
             console.log("Enemigo eliminado.");
         }
     } 

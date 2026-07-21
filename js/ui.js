@@ -11,8 +11,10 @@ class UINivel{
 
         this.spriteNivel.anchor.set(1, 1);
 
-        this.contenedor.x = window.innerWidth + 40;
+        this.contenedor.x = window.innerWidth + 20;
         this.contenedor.y = window.innerHeight;
+
+        this.spriteNivel.visible = false;
 
         this.contenedor.addChild(this.spriteNivel); 
         nuevoJuego.app.stage.addChild(this.contenedor);

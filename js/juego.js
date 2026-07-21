@@ -20,6 +20,7 @@ class Juego {
         this.aspectoJugador = await PIXI.Assets.load("assets/Arachnida.png");
         this.spriteTelarania = await PIXI.Assets.load("assets/Telarania.png");
         this.spriteNivel1 = await PIXI.Assets.load("assets/Nivel1Visual.png");
+        this.spriteNivel2 = await PIXI.Assets.load("assets/Nivel2Visual.png");
         this.spriteMoscaHumedad = await PIXI.Assets.load("assets/MoscaDeHumedad.png");
         this.spriteMariquita = await PIXI.Assets.load("assets/Mariquita.png");
         this.spriteMosca = await PIXI.Assets.load("assets/Mosca.png");
@@ -65,6 +66,7 @@ class Juego {
 
         this.nivelActual.filtrarEnemigos();
         this.nivelActual.cargarEnemigos();
+        this.nivelActual.uiDeNivel.spriteNivel.visible = true
 
         this.juegoEnCurso = true;
 
@@ -88,15 +90,25 @@ class Juego {
     }
 
     async cargarNiveles(){
-        const nivel1 = new Nivel(new UINivel(nuevoJuego.spriteNivel1), 10, ["chico"])
+        const uiLvl1 = new UINivel(nuevoJuego.spriteNivel1);
+        const uiLvl2 = new UINivel(nuevoJuego.spriteNivel2);
+        
+        const nivel1 = new Nivel(uiLvl1, 10, ["chico"], 1);
+        const nivel2 = new Nivel(uiLvl2, 20, ["chico", "mediano"], 2);
 
         this.nivelesDelJuego.push(nivel1);
+        this.nivelesDelJuego.push(nivel2);
 
         this.nivelActual = nivel1;
     }
 
     cambiarNivelActual(nuevoNivel){
-
+        if(this.jugador.enemigosEliminados >= this.nivelActual.maxEnemigos - 5){
+            this.nivelActual.uiDeNivel.spriteNivel.visible = false;
+            this.nivelActual = nuevoNivel;
+            this.nivelActual.uiDeNivel.spriteNivel.visible = true;
+            this.nivelActual.uiDeNivel.contenedor.x = window.innerWidth + 10;
+        }
     }
 
     chequearColisionDeProyectil(){
@@ -191,6 +203,8 @@ class Juego {
 
         this.nivelActual.moverEnemigos();
         this.chequearColisionDeProyectil();
+
+        this.cambiarNivelActual(this.nivelesDelJuego.find(lvl => lvl.idDeNivel === 2));
         //actualizarInterfaz();
         //actualizarPuntaje();
     }
@@ -258,9 +272,10 @@ class Inicio{
 }
 
 class Nivel{ 
-    constructor(nuevaUI, cantMax, enemigosPermitidos){
+    constructor(nuevaUI, cantMax, enemigosPermitidos, id){
         this.container = new PIXI.Container();
-        this.uiDeNivel = null;
+        this.uiDeNivel = nuevaUI;
+        this.idDeNivel = id;
 
         this.maxEnemigos = cantMax;
         this.enemigosEnNivel = [];
