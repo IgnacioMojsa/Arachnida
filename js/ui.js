@@ -1,6 +1,50 @@
-class UIPuntaje{
-    constructor(textura){
+async function cargarInterfaz(){
+    nuevoJuego.uiDeProyectiles = new UIProyectiles(nuevoJuego.spritesDeProyectiles);
 
+    nuevoJuego.uiDeProyectiles.container.x = 110;
+    nuevoJuego.uiDeProyectiles.container.y = window.innerHeight - 5;
+    nuevoJuego.uiDeProyectiles.actualizarCargas();
+
+    nuevoJuego.app.stage.addChild(nuevoJuego.uiDeProyectiles.container);
+}
+
+class UIProyectiles{
+    constructor(textura){
+        this.container = new PIXI.Container();
+
+        this.cargarSprites(textura);
+    }
+
+    cargarSprites(spritesACargar){
+        this.spritesAnimados = {};
+
+        for (let key of Object.keys(spritesACargar.animations)) {
+            this.spritesAnimados[key] = new PIXI.AnimatedSprite(spritesACargar.animations[key])
+      
+            this.spritesAnimados[key].name = key;
+            this.spritesAnimados[key].play();
+            this.spritesAnimados[key].loop = true;
+            this.spritesAnimados[key].animationSpeed = 0.15;
+            this.spritesAnimados[key].anchor.set(0.5, 1);
+            this.container.addChild(this.spritesAnimados[key]);
+        }
+    }
+
+    cambiarAnimacion(nuevaAnimacion){
+        this.animacionActual = nuevaAnimacion;
+
+        for (let key of Object.keys(this.spritesAnimados)) {
+            this.spritesAnimados[key].visible = false;
+        }
+
+        this.spritesAnimados[nuevaAnimacion].visible = true;
+        this.spriteAnimadoActual = this.spritesAnimados[nuevaAnimacion];
+    }
+
+    actualizarCargas(){
+        const cargasActuales = nuevoJuego.jugador.cargasDisponibles.toString();
+
+        this.cambiarAnimacion(cargasActuales);
     }
 }
 

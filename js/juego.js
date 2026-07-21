@@ -13,6 +13,8 @@ class Juego {
 
         this.nivelActual = null;
         this.nivelesDelJuego = [];
+
+        this.uiDeProyectiles = null;
     }
 
     async precargarAssets(){
@@ -28,6 +30,7 @@ class Juego {
         this.spriteMosquito = await PIXI.Assets.load("assets/Mosquito.png");
         this.spriteAbejorro = await PIXI.Assets.load("assets/Abejorro.png");
         this.spriteSombraArachnida = await PIXI.Assets.load("assets/sombraArachnida.png");
+        this.spritesDeProyectiles = await PIXI.Assets.load("assets/UIProyectiles.json");
     }
 
     async arrancar(){
@@ -63,6 +66,7 @@ class Juego {
         await this.cargarFondo();
         await this.cargarJugador();
         await this.cargarNiveles();
+        await cargarInterfaz();
 
         this.nivelActual.filtrarEnemigos();
         this.nivelActual.cargarEnemigos();
@@ -128,6 +132,10 @@ class Juego {
                 }
             }
         }
+    }
+
+    actualizarInterfaz(){
+        this.uiDeProyectiles.actualizarCargas();
     }
 
     configurarTeclado(){
@@ -205,7 +213,7 @@ class Juego {
         this.chequearColisionDeProyectil();
 
         this.cambiarNivelActual(this.nivelesDelJuego.find(lvl => lvl.idDeNivel === 2));
-        //actualizarInterfaz();
+        this.actualizarInterfaz();
         //actualizarPuntaje();
     }
 }

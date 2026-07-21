@@ -13,6 +13,7 @@ class Jugador{
         this.friccion = 0.5;
 
         this.cooldown = false;
+        this.cargasDisponibles = 20;
         this.proyectiles = [];
 
         this.enemigosEliminados = 0;
@@ -89,6 +90,8 @@ class Jugador{
             const nuevoProyectil = new Proyectil(this.container.x, this.container.y, nuevoJuego.spriteTelarania);
 
             this.proyectiles.push(nuevoProyectil);
+
+            this.cargasDisponibles -= 1;
 
             this.cooldown = true;
 
