@@ -15,17 +15,17 @@ class Jugador{
         this.cooldown = false;
         this.proyectiles = [];
 
+        this.enemigosEliminados = [];
+
         this.sprite.scale.set(0.05);
         this.sprite.anchor.set(0.5,0);
 
         this.sombra = new PIXI.Sprite(nuevoJuego.spriteSombraArachnida);
         this.sombra.alpha = 0.6;
-        this.sombra.anchor.set(0.5, 0);
-        this.sombra.scale.set(0.12, 0.15);
-        this.sombra.position.set(this.container.position.x, this.container.position.y + 130)
+        this.sombra.anchor.set(0.5, 0.5);
         this.sombra.zIndex = 4;
 
-        this.container.scale.set(0.5);
+        this.reescalar();
 
         this.container.addChild(this.sprite);
         this.container.zIndex = 5;
@@ -72,9 +72,14 @@ class Jugador{
 
         const factorX = window.innerWidth / anchoDiseno;
         const factorY = window.innerHeight / altoDiseno;
+        const separacion = window.innerHeight / 10.8;
 
-        this.sprite.scale.x = 0.35 * factorX;
-        this.sprite.scale.y = 0.35 * factorY;
+        this.sprite.scale.x = 0.15 * factorX;
+        this.sprite.scale.y = 0.15 * factorY;
+
+        this.sombra.scale.x = 0.16 * factorX;
+        this.sombra.scale.y = 0.15 * factorY;
+        this.sombra.y = this.container.y + separacion;
 
         this.container.y = window.innerHeight - 200 * factorY;
     }

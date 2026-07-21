@@ -44,6 +44,9 @@ class Mariquita extends Enemigo{
     constructor(x, y){
         super(x, y, nuevoJuego.spriteMariquita);
 
+        this.sprite.scale.x = 0.07 * window.innerWidth / 1074;
+        this.sprite.scale.y = 0.07 * window.innerHeight / 622;
+
         this.health = 50;
         this.tipoEnemigo = "chico";
     }
