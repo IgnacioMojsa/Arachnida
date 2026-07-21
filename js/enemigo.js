@@ -36,6 +36,9 @@ class MoscaDeHumedad extends Enemigo{
     constructor(x, y){
         super(x, y, nuevoJuego.spriteMoscaHumedad);
 
+        this.sprite.scale.x = 0.05 * window.innerWidth / 1060;
+        this.sprite.scale.y = 0.05 * window.innerHeight / 609;
+
         this.health = 25; 
         this.tipoEnemigo = "chico";
     }
