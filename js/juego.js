@@ -106,12 +106,23 @@ class Juego {
         this.nivelActual = nivel1;
     }
 
+    limpiarNivelActual(){
+        const enemigosRestantes = this.nivelActual.enemigosEnNivel;
+
+        enemigosRestantes.forEach(e => e.container.destroy({ children: true }));
+    }
+
     cambiarNivelActual(nuevoNivel){
-        if(this.jugador.enemigosEliminados >= this.nivelActual.maxEnemigos - 5){
+        if(this.jugador.enemigosEliminados >= this.nivelActual.maxEnemigos - 3){
             this.nivelActual.uiDeNivel.spriteNivel.visible = false;
+            this.limpiarNivelActual()
+
             this.nivelActual = nuevoNivel;
+
             this.nivelActual.uiDeNivel.spriteNivel.visible = true;
             this.nivelActual.uiDeNivel.contenedor.x = window.innerWidth + 10;
+            this.nivelActual.filtrarEnemigos();
+            this.nivelActual.cargarEnemigos();
         }
     }
 
@@ -311,12 +322,15 @@ class Nivel{
     }
 
     filtrarEnemigos(){
-        if(this.tiposDeEnemigos.some(e => e === "chico")){
+        if(this.tiposDeEnemigos.some(e => e === "chico") && !this.tiposDeEnemigos.some(e => e === "mediano")){
             this.enemigosDisponibles = [MoscaDeHumedad, Mariquita];
         }
 
         else if(this.tiposDeEnemigos.some(e => e === "mediano")){
             this.enemigosDisponibles = [MoscaDeHumedad, Mariquita, Mosca, Abeja];
+        }
+        else{
+            this.enemigosDisponibles = [MoscaDeHumedad, Mariquita, Mosca, Abeja, Mosquito, Abejorro];
         }
     }
 
