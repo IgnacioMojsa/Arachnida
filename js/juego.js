@@ -14,6 +14,7 @@ class Juego {
         this.nivelActual = null;
         this.nivelesDelJuego = [];
 
+        this.uiControles = null;
         this.uiDeProyectiles = null;
     }
 
@@ -31,6 +32,7 @@ class Juego {
         this.spriteAbejorro = await PIXI.Assets.load("assets/Abejorro.png");
         this.spriteSombraArachnida = await PIXI.Assets.load("assets/sombraArachnida.png");
         this.spritesDeProyectiles = await PIXI.Assets.load("assets/UIProyectiles.json");
+        this.spriteControles = await PIXI.Assets.load("assets/controles.png");
     }
 
     async arrancar(){
@@ -69,8 +71,8 @@ class Juego {
         await cargarInterfaz();
 
         this.nivelActual.filtrarEnemigos();
-        this.nivelActual.cargarEnemigos();
         this.nivelActual.uiDeNivel.spriteNivel.visible = true
+        this.esconderControlesYGenerarEnemigos();
 
         this.juegoEnCurso = true;
 
@@ -106,6 +108,13 @@ class Juego {
         this.nivelActual = nivel1;
     }
 
+    esconderControlesYGenerarEnemigos(){
+        setTimeout(() => {
+            this.uiControles.visible = false;
+            this.nivelActual.cargarEnemigos();
+        }, 4000);  
+    }
+    
     limpiarNivelActual(){
         const enemigosRestantes = this.nivelActual.enemigosEnNivel;
 

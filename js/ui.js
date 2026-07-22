@@ -5,7 +5,13 @@ async function cargarInterfaz(){
     nuevoJuego.uiDeProyectiles.container.y = window.innerHeight - 5;
     nuevoJuego.uiDeProyectiles.actualizarCargas();
 
+    nuevoJuego.uiControles = new PIXI.Sprite(nuevoJuego.spriteControles);
+    nuevoJuego.uiControles.anchor.set(0.5);
+    nuevoJuego.uiControles.x = window.innerWidth / 2;
+    nuevoJuego.uiControles.y = window.innerHeight / 4;
+
     nuevoJuego.app.stage.addChild(nuevoJuego.uiDeProyectiles.container);
+    nuevoJuego.app.stage.addChild(nuevoJuego.uiControles);
 }
 
 class UIProyectiles{
