@@ -33,6 +33,7 @@ class Juego {
         this.spriteSombraArachnida = await PIXI.Assets.load("assets/sombraArachnida.png");
         this.spritesDeProyectiles = await PIXI.Assets.load("assets/UIProyectiles.json");
         this.spriteControles = await PIXI.Assets.load("assets/controles.png");
+        this.spriteOoteca = await PIXI.Assets.load("assets/ooteca.png");
     }
 
     async arrancar(){
@@ -99,8 +100,8 @@ class Juego {
         const uiLvl1 = new UINivel(nuevoJuego.spriteNivel1);
         const uiLvl2 = new UINivel(nuevoJuego.spriteNivel2);
         
-        const nivel1 = new Nivel(uiLvl1, 10, ["chico"], 1);
-        const nivel2 = new Nivel(uiLvl2, 20, ["chico", "mediano"], 2);
+        const nivel1 = new Nivel(uiLvl1, 10, [chico], 1);
+        const nivel2 = new Nivel(uiLvl2, 20, [chico, mediano], 2);
 
         this.nivelesDelJuego.push(nivel1);
         this.nivelesDelJuego.push(nivel2);
@@ -232,6 +233,8 @@ class Juego {
         this.nivelActual.moverEnemigos();
         this.chequearColisionDeProyectil();
 
+        this.nivelActual.moverOotecas();
+
         this.cambiarNivelActual(this.nivelesDelJuego.find(lvl => lvl.idDeNivel === 2));
         this.actualizarInterfaz();
         //actualizarPuntaje();
@@ -310,6 +313,7 @@ class Nivel{
         this.tiposDeEnemigos = enemigosPermitidos;
         this.enemigosDisponibles = [MoscaDeHumedad, Mariquita, Mosca, Abeja, Mosquito, Abejorro];
         this.spawnDeEnemigos = [];
+        this.ootecasEnNivel = [];
     }
 
     cargarEnemigos(){  
@@ -331,11 +335,11 @@ class Nivel{
     }
 
     filtrarEnemigos(){
-        if(this.tiposDeEnemigos.some(e => e === "chico") && !this.tiposDeEnemigos.some(e => e === "mediano")){
+        if(this.tiposDeEnemigos.some(e => e === chico) && !this.tiposDeEnemigos.some(e => e === mediano)){
             this.enemigosDisponibles = [MoscaDeHumedad, Mariquita];
         }
 
-        else if(this.tiposDeEnemigos.some(e => e === "mediano")){
+        else if(this.tiposDeEnemigos.some(e => e === mediano)){
             this.enemigosDisponibles = [MoscaDeHumedad, Mariquita, Mosca, Abeja];
         }
         else{
@@ -346,6 +350,12 @@ class Nivel{
     moverEnemigos(){
         if(this.enemigosEnNivel.length > 0){
             this.enemigosEnNivel.forEach(enemigo => enemigo.moverse())
+        }
+    }
+
+    moverOotecas(){
+        if(this.ootecasEnNivel.length > 0){
+            this.ootecasEnNivel.forEach(o => o.actualizarPosicion());
         }
     }
 
