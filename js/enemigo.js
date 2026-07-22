@@ -1,5 +1,5 @@
-const chico = {recarga: 1, escalaContenedor:0.5};
-const mediano = {recarga: 2, escalaContenedor: 1};
+const chico = {recarga: 1, escalaContenedor:0.07};
+const mediano = {recarga: 2, escalaContenedor: 0.09};
 const grande = {recarga: 3, escalaContenedor: 2};
 
 class Enemigo{
@@ -68,6 +68,9 @@ class Mosca extends Enemigo{
     constructor(x, y){
         super(x, y, nuevoJuego.spriteMosca);
 
+        this.sprite.scale.x = 0.08 * (window.innerWidth / 1073);
+        this.sprite.scale.y = 0.09 * (window.innerHeight / 754);
+
         this.health = 75;
         this.tipoEnemigo = mediano;
     }
@@ -76,6 +79,9 @@ class Mosca extends Enemigo{
 class Abeja extends Enemigo{
     constructor(x, y){
         super(x, y, nuevoJuego.spriteAbeja);
+
+        this.sprite.scale.x = 0.095 * (window.innerWidth / 1030);
+        this.sprite.scale.y = 0.14 * (window.innerHeight / 962);
 
         this.health = 100;
         this.tipoEnemigo = mediano;

@@ -8,8 +8,8 @@ class Jugador{
         this.input = {izq: false, der: false};
 
         this.velocidad = {x: 0, y: 0}
-        this.velMaxima = 80;
-        this.aceleracion = 40;
+        this.velMaxima = 100;
+        this.aceleracion = 75;
         this.friccion = 0.5;
 
         this.cooldown = false;
