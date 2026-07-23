@@ -34,6 +34,10 @@ class Jugador{
         nuevoJuego.mundo.addChild(this.sombra);
     }
 
+    get collider(){
+        return this.sprite.getBounds();
+    }
+
     inputTeclado(dt, keys){
         this.input.izq    = keys.a || keys.A;
         this.input.der    = keys.d || keys.D;
@@ -61,9 +65,20 @@ class Jugador{
 
         const ataque = (keys[" "] && !keysProcesadas[" "]);
         
-        if (ataque) {
+        if (ataque){
             this.disparar();
             console.log("Tirando telarañas");
+        }
+
+        //---- RECARGA ----//
+
+        const recarga = (keys["r"] && !keysProcesadas["r"]) || (keys["R"] && !keysProcesadas["R"]);
+
+        if(recarga){
+            if (keys["r"]) keysProcesadas["r"] = true;
+            if (keys["R"]) keysProcesadas["R"] = true;
+
+            this.recargar();
         }
     }
 
@@ -96,6 +111,20 @@ class Jugador{
             this.cooldown = true;
 
             setTimeout(() => {this.cooldown = false}, 1000)
+        }
+    }
+
+    recargar(){
+        for (let o = nuevoJuego.nivelActual.ootecasEnNivel.length - 1; o >= 0; o--){
+            const ooteca = nuevoJuego.nivelActual.ootecasEnNivel[o];
+
+            if(verificarColision(this.collider, ooteca.collider)){
+                this.cargasDisponibles += ooteca.enemigoContenido.tipoEnemigo.recarga;
+                ooteca.destruir();
+                console.log("Recargando telarañas");
+
+                break;
+            }
         }
     }
 

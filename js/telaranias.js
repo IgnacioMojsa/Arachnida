@@ -5,7 +5,7 @@ class Proyectil{
         this.container.x = x;
         this.container.y = y;
 
-        this.sprite.scale.set(0.5);
+        this.sprite.scale.set(0.17);
         this.sprite.anchor.set(0.5,0);
 
         this.container.addChild(this.sprite);

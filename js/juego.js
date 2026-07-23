@@ -123,7 +123,7 @@ class Juego {
     }
 
     cambiarNivelActual(nuevoNivel){
-        if(this.jugador.enemigosEliminados >= this.nivelActual.maxEnemigos - 3){
+        if(this.jugador.enemigosEliminados >= this.nivelActual.maxEnemigos - 8){
             this.nivelActual.uiDeNivel.spriteNivel.visible = false;
             this.limpiarNivelActual()
 
@@ -152,6 +152,14 @@ class Juego {
                     break;
                 }
             }
+        }
+    }
+
+    moverTodaOotecaExistente(){
+        const ootecasExistentes = this.nivelesDelJuego.filter(n => n.ootecasEnNivel.length).length;
+        
+        if(ootecasExistentes > 0){
+            this.nivelesDelJuego.forEach(n => n.moverOotecas())       
         }
     }
 
@@ -187,10 +195,9 @@ class Juego {
         });
 
         window.addEventListener('keyup', (e) => {
-        // Si la tecla existe en keys, la marcamos como false
         if (e.key in keys){
                 keys[e.key] = false;
-                keysProcesadas[e.key] = false; // <-- AGREGA ESTO: permite volver a disparar
+                keysProcesadas[e.key] = false;
                 e.preventDefault();
             } 
         });
@@ -231,9 +238,9 @@ class Juego {
         this.jugador.update(dt);
 
         this.nivelActual.moverEnemigos();
-        this.chequearColisionDeProyectil();
+        this.chequearColisionDeProyectil(); 
 
-        this.nivelActual.moverOotecas();
+        this.moverTodaOotecaExistente();
 
         this.cambiarNivelActual(this.nivelesDelJuego.find(lvl => lvl.idDeNivel === 2));
         this.actualizarInterfaz();
@@ -385,6 +392,8 @@ const keys = {
 const keysProcesadas = {
     p: false,
     P: false,
+    r: false,
+    R: false,
     " ":false 
 }
 
