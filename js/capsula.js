@@ -34,7 +34,6 @@ class Capsula{
 
     destruir(){
         nuevoJuego.mundo.removeChild(this.container);
-        nuevoJuego.nivelActual.ootecasEnNivel.splice(this, 1);
         this.container.destroy({ children: true });
     }
 }

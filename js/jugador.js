@@ -120,6 +120,7 @@ class Jugador{
 
             if(verificarColision(this.collider, ooteca.collider)){
                 this.cargasDisponibles += ooteca.enemigoContenido.tipoEnemigo.recarga;
+                nuevoJuego.nivelActual.ootecasEnNivel.splice(this, 1);
                 ooteca.destruir();
                 console.log("Recargando telarañas");
 

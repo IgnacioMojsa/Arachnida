@@ -30,6 +30,8 @@ class Juego {
         this.spriteAbeja = await PIXI.Assets.load("assets/Abeja.png");
         this.spriteMosquito = await PIXI.Assets.load("assets/Mosquito.png");
         this.spriteAbejorro = await PIXI.Assets.load("assets/Abejorro.png");
+        this.spriteMariquitaDañada = await PIXI.Assets.load("assets/MariquitaDañada.png");
+        this.spriteMoscaHumedadDañada = await PIXI.Assets.load("assets/MoscaDeHumedadDañada.png");
         this.spriteSombraArachnida = await PIXI.Assets.load("assets/sombraArachnida.png");
         this.spritesDeProyectiles = await PIXI.Assets.load("assets/UIProyectiles.json");
         this.spriteControles = await PIXI.Assets.load("assets/controles.png");
@@ -123,7 +125,7 @@ class Juego {
     }
 
     cambiarNivelActual(nuevoNivel){
-        if(this.jugador.enemigosEliminados >= this.nivelActual.maxEnemigos - 8){
+        if(this.jugador.enemigosEliminados >= this.nivelActual.maxEnemigos - 3){
             this.nivelActual.uiDeNivel.spriteNivel.visible = false;
             this.limpiarNivelActual()
 
@@ -144,7 +146,7 @@ class Juego {
                 const enemigo = this.nivelActual.enemigosEnNivel[e];
 
                 if (verificarColision(proyectil.collider, enemigo.collider)){
-                    enemigo.health -= 25;
+                    enemigo.recibirImpacto();
 
                     proyectil.destruir(p);
                     enemigo.eliminarEnemigo(e);
