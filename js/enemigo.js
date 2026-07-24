@@ -92,10 +92,13 @@ class Mariquita extends Enemigo{
 
 class Mosca extends Enemigo{
     constructor(x, y){
-        super(x, y, nuevoJuego.spriteMosca);
+        super(x, y, nuevoJuego.spriteMosca, nuevoJuego.spriteMoscaDañada);
 
         this.sprite.scale.x = 0.08 * (window.innerWidth / 1073);
         this.sprite.scale.y = 0.09 * (window.innerHeight / 754);
+
+        this.spriteDolor.scale.x = 0.08 * window.innerWidth / 1073;
+        this.spriteDolor.scale.y = 0.09 * window.innerHeight / 754;
 
         this.health = 75;
         this.tipoEnemigo = mediano;
@@ -104,10 +107,13 @@ class Mosca extends Enemigo{
 
 class Abeja extends Enemigo{
     constructor(x, y){
-        super(x, y, nuevoJuego.spriteAbeja);
+        super(x, y, nuevoJuego.spriteAbeja, nuevoJuego.spriteAbejaDañada);
 
-        this.sprite.scale.x = 0.095 * (window.innerWidth / 1030);
+        this.sprite.scale.x = 0.098 * (window.innerWidth / 1030);
         this.sprite.scale.y = 0.14 * (window.innerHeight / 962);
+
+        this.spriteDolor.scale.x = 0.095 * (window.innerWidth / 1030);
+        this.spriteDolor.scale.y = 0.14 * (window.innerHeight / 962);
 
         this.health = 100;
         this.tipoEnemigo = mediano;
@@ -118,6 +124,9 @@ class Mosquito extends Enemigo{
     constructor(x, y){
         super(x, y, nuevoJuego.spriteMosquito);
 
+        this.sprite.scale.x = 0.14 * (window.innerWidth / 1044);
+        this.sprite.scale.y = 0.18 * (window.innerHeight / 893);
+
         this.health = 150; 
         this.tipoEnemigo = grande;
     }
@@ -126,6 +135,9 @@ class Mosquito extends Enemigo{
 class Abejorro extends Enemigo{
     constructor(x, y){
         super(x, y, nuevoJuego.spriteAbejorro);
+
+        this.sprite.scale.x = 0.15 * (window.innerWidth / 1074);
+        this.sprite.scale.y = 0.21 * (window.innerHeight / 844);
 
         this.health = 175;
         this.tipoEnemigo = grande;

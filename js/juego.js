@@ -14,6 +14,8 @@ class Juego {
         this.nivelActual = null;
         this.nivelesDelJuego = [];
 
+        this.cambioRapidoDeNivel = false;
+
         this.uiControles = null;
         this.uiDeProyectiles = null;
     }
@@ -24,6 +26,7 @@ class Juego {
         this.spriteTelarania = await PIXI.Assets.load("assets/Telarania.png");
         this.spriteNivel1 = await PIXI.Assets.load("assets/Nivel1Visual.png");
         this.spriteNivel2 = await PIXI.Assets.load("assets/Nivel2Visual.png");
+        this.spriteNivel3 = await PIXI.Assets.load("assets/Nivel3Visual.png");
         this.spriteMoscaHumedad = await PIXI.Assets.load("assets/MoscaDeHumedad.png");
         this.spriteMariquita = await PIXI.Assets.load("assets/Mariquita.png");
         this.spriteMosca = await PIXI.Assets.load("assets/Mosca.png");
@@ -32,6 +35,8 @@ class Juego {
         this.spriteAbejorro = await PIXI.Assets.load("assets/Abejorro.png");
         this.spriteMariquitaDañada = await PIXI.Assets.load("assets/MariquitaDañada.png");
         this.spriteMoscaHumedadDañada = await PIXI.Assets.load("assets/MoscaDeHumedadDañada.png");
+        this.spriteMoscaDañada = await PIXI.Assets.load("assets/MoscaDañada.png");
+        this.spriteAbejaDañada = await PIXI.Assets.load("assets/AbejaDañada.png");
         this.spriteSombraArachnida = await PIXI.Assets.load("assets/sombraArachnida.png");
         this.spritesDeProyectiles = await PIXI.Assets.load("assets/UIProyectiles.json");
         this.spriteControles = await PIXI.Assets.load("assets/controles.png");
@@ -99,14 +104,17 @@ class Juego {
     }
 
     async cargarNiveles(){
-        const uiLvl1 = new UINivel(nuevoJuego.spriteNivel1);
-        const uiLvl2 = new UINivel(nuevoJuego.spriteNivel2);
+        const uiLvl1 = new UINivel(this.spriteNivel1);
+        const uiLvl2 = new UINivel(this.spriteNivel2);
+        const uiLvl3 = new UINivel(this.spriteNivel3);
         
         const nivel1 = new Nivel(uiLvl1, 10, [chico], 1);
-        const nivel2 = new Nivel(uiLvl2, 20, [chico, mediano], 2);
+        const nivel2 = new Nivel(uiLvl2, 15, [chico, mediano], 2);
+        const nivel3 = new Nivel(uiLvl3, 20, [chico, mediano, grande], 3);
 
         this.nivelesDelJuego.push(nivel1);
         this.nivelesDelJuego.push(nivel2);
+        this.nivelesDelJuego.push(nivel3);
 
         this.nivelActual = nivel1;
     }
@@ -125,7 +133,7 @@ class Juego {
     }
 
     cambiarNivelActual(nuevoNivel){
-        if(this.jugador.enemigosEliminados >= this.nivelActual.maxEnemigos - 3){
+        if(this.jugador.enemigosEliminados >= this.nivelActual.maxEnemigos - 3 || this.cambioRapidoDeNivel){ 
             this.nivelActual.uiDeNivel.spriteNivel.visible = false;
             this.limpiarNivelActual()
 
@@ -135,6 +143,15 @@ class Juego {
             this.nivelActual.uiDeNivel.contenedor.x = window.innerWidth + 10;
             this.nivelActual.filtrarEnemigos();
             this.nivelActual.cargarEnemigos();
+        }
+    }
+
+    chequearCambioDeNivel(){
+        if(this.nivelActual.idDeNivel === 1){
+            this.cambiarNivelActual(this.nivelesDelJuego.find(lvl => lvl.idDeNivel === 2));
+        }
+        else if(this.nivelActual.idDeNivel === 2){
+            this.cambiarNivelActual(this.nivelesDelJuego.find(lvl => lvl.idDeNivel === 3));
         }
     }
 
@@ -194,6 +211,10 @@ class Juego {
                 this.pantallaInicial.cerrarBestiario();  
                 this.bestiarioAbierto = false;  
             }
+
+            if ((e.key === "ñ" || e.key === "Ñ")) {
+                this.cambioRapidoDeNivel = true;
+            }
         });
 
         window.addEventListener('keyup', (e) => {
@@ -244,7 +265,7 @@ class Juego {
 
         this.moverTodaOotecaExistente();
 
-        this.cambiarNivelActual(this.nivelesDelJuego.find(lvl => lvl.idDeNivel === 2));
+        this.chequearCambioDeNivel();
         this.actualizarInterfaz();
         //actualizarPuntaje();
     }
@@ -344,14 +365,14 @@ class Nivel{
     }
 
     filtrarEnemigos(){
-        if(this.tiposDeEnemigos.some(e => e === chico) && !this.tiposDeEnemigos.some(e => e === mediano)){
+        if(this.tiposDeEnemigos.some(e => e === chico) && !this.tiposDeEnemigos.some(e => e === mediano) && !this.tiposDeEnemigos.some(e => e === grande)){
             this.enemigosDisponibles = [MoscaDeHumedad, Mariquita];
         }
 
-        else if(this.tiposDeEnemigos.some(e => e === mediano)){
+        else if(this.tiposDeEnemigos.some(e => e === mediano) && !this.tiposDeEnemigos.some(e => e === grande)){
             this.enemigosDisponibles = [MoscaDeHumedad, Mariquita, Mosca, Abeja];
         }
-        else{
+        else if(this.tiposDeEnemigos.some(e => e === grande)){
             this.enemigosDisponibles = [MoscaDeHumedad, Mariquita, Mosca, Abeja, Mosquito, Abejorro];
         }
     }
@@ -384,10 +405,12 @@ const keys = {
     d:false,
     p:false,
     r:false,
+    ñ:false,
     A:false,
     D:false,
     P:false,
     R:false,
+    Ñ:false,
     " ":false 
 };
 
@@ -395,7 +418,9 @@ const keysProcesadas = {
     p: false,
     P: false,
     r: false,
-    R: false,
+    R: false, 
+    ñ: false,
+    Ñ: false,
     " ":false 
 }
 
